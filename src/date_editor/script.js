@@ -1,9 +1,13 @@
+var token = "";
+
+
 function dateToOADate(d) {
     const base = new Date(Date.UTC(1899, 11, 30)); // 1899-12-30
     const msPerDay = 24 * 60 * 60 * 1000;
     const days = (d - base) / msPerDay;
     return days;
 }
+
 
 function toLittleEndianHex(val) {
     const buffer = new ArrayBuffer(8);
@@ -68,7 +72,7 @@ function patchExe(buffer, offset, sourceHex, targetHex) {
 
 
 async function processFormData() {
-    const token = ""; // 可选：GitHub Personal Access Token（建议用于私有仓库或避免速率限制）
+    token = ""; // 可选：GitHub Personal Access Token（建议用于私有仓库或避免速率限制）
     const headers = token ? {
         "Authorization": `token ${token}`
     } : {};
@@ -79,27 +83,32 @@ async function processFormData() {
     let url = "https://download-my-gh-release-asset.liuljwtt.workers.dev/?repo=EventCountDown&tag=v1.0.0&file=gaokao1.exe";
     // blocked by CORS policy
 
-    let startDate_target_hex = toLittleEndianHex(dateToOADate(new Date("2019-08-15T00:00:00Z")));
-    let endDate_target_hex = toLittleEndianHex(dateToOADate(new Date("2020-06-07T00:00:00Z")));
-    let startDate_hexOffset = null;
-    let endDate_hexOffset = null;
+    let startDate_hex = toLittleEndianHex(dateToOADate(new Date("2019-08-15T00:00:00Z")));
+    let endDate_hex = toLittleEndianHex(dateToOADate(new Date("2020-06-07T00:00:00Z")));
+    let startDate_hexOffset = 4280;
+    let endDate_hexOffset = 4272;
 
-    let startDate_str = document.getElementById("date-start").value;
-    let endDate_str = document.getElementById("date-end").value;
+    let startDate_target_str = document.getElementById("date-start").value;
+    let endDate_target_str = document.getElementById("date-end").value;
     let current_time = new Date();
     let filename = `gaokao-${current_time.getFullYear()}-${(current_time.getMonth() + 1).toString().padStart(2, '0')}-${current_time.getDate().toString().padStart(2, '0')}-${current_time.getHours().toString().padStart(2, '0')}-${current_time.getMinutes().toString().padStart(2, '0')}-${current_time.getSeconds().toString().padStart(2, '0')}.exe`;
 
-    let startDate = new Date(startDate_str);
-    let endDate = new Date(endDate_str);
-    let startDate_dbl = dateToOADate(startDate);
-    let endDate_dbl = dateToOADate(endDate);
-    let startDate_hex = toLittleEndianHex(startDate_dbl);
-    let endDate_hex = toLittleEndianHex(endDate_dbl);
-    console.log(`start date: ${startDate}, ${startDate_dbl}, ${startDate_hex}`);
-    console.log(`end date: ${endDate}, ${endDate_dbl}, ${endDate_hex}`);
+    let startDate_target = new Date(startDate_target_str);
+    let endDate_target = new Date(endDate_target_str);
+    let startDate_target_dbl = dateToOADate(startDate_target);
+    let endDate_target_dbl = dateToOADate(endDate_target);
+    let startDate_target_hex = toLittleEndianHex(startDate_target_dbl);
+    let endDate_target_hex = toLittleEndianHex(endDate_target_dbl);
+    // console.log(`start date hex: ${startDate_hex}`);
+    // console.log(`end date hex: ${endDate_hex}`);
+    console.log(`start date [target]: ${startDate_target}, ${startDate_target_dbl}, ${startDate_target_hex}`);
+    console.log(`end date [target]: ${endDate_target}, ${endDate_target_dbl}, ${endDate_target_hex}`);
 
     const response = await fetch(url, { headers });
-    if (!response.ok) throw new Error("下载失败: " + response.statusText);
+    if (!response.ok) {
+        alert("下载失败: " + response.statusText);
+        throw new Error("下载失败: " + response.statusText);
+    }
     let buffer = await response.arrayBuffer();
 
     buffer = patchExe(buffer, startDate_hexOffset, startDate_hex, startDate_target_hex);
@@ -114,11 +123,12 @@ async function processFormData() {
     URL.revokeObjectURL(link.href);
 }
 
+
 async function getAssetsDownloadCount() {
     const owner = "LiuJiewenTT";
     const repo = "EventCountDown";
     const tag = "v1.0.0";
-    const token = ""; // 可选：GitHub Personal Access Token（建议用于私有仓库或避免速率限制）
+    token = ""; // 可选：GitHub Personal Access Token（建议用于私有仓库或避免速率限制）
 
     const headers = token ? {
         "Authorization": `token ${token}`
@@ -137,6 +147,7 @@ async function getAssetsDownloadCount() {
         return null;
     }
 }
+
 
 async function showAssetsDownloadCount() {
     let counter = document.getElementById("getloli-counter");

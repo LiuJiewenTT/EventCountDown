@@ -2,8 +2,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" lang="zh" content="高考倒计时器 - 日期编辑器">
+    <meta name="description" lang="en" content="GaoKao Countdown - Date Editor">
+    <meta name="keywords" content="高考倒计时,自定义倒计时,Countdown">
+
     <link rel="stylesheet" href="style.css">
     <title>Date Editor</title>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isChinese = /^zh/.test(navigator.language || navigator.userLanguage);
+            if (isChinese) {
+                document.title = '高考倒计时器 - 日期编辑器';
+                document.querySelector('h1').textContent = '高考倒计时器 - 日期编辑器';
+            } else {
+                document.title = 'GaoKao Countdown - Date Editor';
+            }
+        });
+    </script>
 </head>
 <body>
     <h1>Date Editor</h1>
