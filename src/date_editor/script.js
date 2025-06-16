@@ -68,16 +68,15 @@ function patchExe(buffer, offset, sourceHex, targetHex) {
 
 
 async function processFormData() {
-
     const token = ""; // 可选：GitHub Personal Access Token（建议用于私有仓库或避免速率限制）
-
     const headers = token ? {
         "Authorization": `token ${token}`
     } : {};
     
     // asset id: 264133901
     // let url = "https://api.github.com/repos/LiuJiewenTT/EventCountDown/releases/assets/264133901"
-    let url = "https://github.com/LiuJiewenTT/EventCountDown/releases/download/v1.0.0/gaokao1.exe"
+    // let url = "https://github.com/LiuJiewenTT/EventCountDown/releases/download/v1.0.0/gaokao1.exe";
+    let url = "https://download-my-gh-release-asset.liuljwtt.workers.dev/?repo=EventCountDown&tag=v1.0.0&file=gaokao1.exe";
     // blocked by CORS policy
 
     let startDate_target_hex = toLittleEndianHex(dateToOADate(new Date("2019-08-15T00:00:00Z")));

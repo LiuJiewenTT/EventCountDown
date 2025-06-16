@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Date Editor</h1>
-    <form class="date-form">
+    <form class="date-form" id="date-form">
         <span>
             <label for="date-start">计时起始日期:&nbsp;</label>
             <input type="date" id="date-start" name="date-start">
@@ -21,10 +21,17 @@
         <input type="text" id="event-name" name="event-name">
         <label for="event-description">事件描述:</label>
         <textarea id="event-description" name="event-description"></textarea> -->
-        <input type="submit" value="提交" action="processFormData()">
+        <input type="submit" value="提交">
     </form>
 
     <script src="script.js"></script>
+    <script>
+        document.getElementById('date-form').addEventListener('submit', async (event) => {
+            event.preventDefault(); // 阻止页面刷新
+            console.log('Form submitted');
+            await processFormData(); // 异步处理表单数据
+        });
+    </script>
 
     <div class="badges">
         <a href="https://github.com/LiuJiewenTT/EventCountDown"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/LiuJiewenTT/EventCountDown"></a>
